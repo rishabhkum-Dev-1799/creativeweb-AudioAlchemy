@@ -40,12 +40,14 @@ export const UserContextProvider = (props: Props) => {
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   // creating functions which will query to the supabase tables can provide us the results
-  const getUserDetails = supabase.from('users').select('*').single();
-  const getSubscription = supabase
-    .from('subscriptions')
-    .select('*,prices(*,products(*))')
-    .in('status', ['trialing', 'active'])
-    .single();
+  const getUserDetails = () => supabase.from('users').select('*').single();
+  const getSubscription = () => {
+    return supabase
+      .from('subscriptions')
+      .select('*,prices(*,products(*))')
+      .in('status', ['trialing', 'active'])
+      .single();
+  };
   //using the useEffect hook for the sideeffect handling and fetching data from the supabase
   useEffect(() => {
     if (user && !isLoadingData && !userDetails && !subscription) {
